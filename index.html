@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Jeu du Carré Sauteur p5.js</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
+    <script src="sketch.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Empêche les barres de défilement */
+            background-color: #000; /* Fond noir si le canvas ne prend pas tout */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+        main { /* p5.js crée le canvas dans le <main> par défaut */
+            border: none; /* Plus de bordure pour le fullscreen */
+            /* Le canvas prendra la taille de la fenêtre via p5.js */
+        }
+        #score {
+            font-size: clamp(16px, 4vw, 28px); /* Taille de police adaptative */
+            margin-top: 10px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #fff;
+            background-color: rgba(0,0,0,0.3);
+            padding: 5px 10px;
+            border-radius: 5px;
+            z-index: 10;
+        }
+        #gameOverScreen, #startScreenContainer { /* Styles communs pour les superpositions */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(240, 240, 240, 0.92);
+            padding: clamp(20px, 5vw, 40px);
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            z-index: 100;
+            color: #333;
+        }
+        #gameOverScreen h2, #startScreenContainer h2 {
+            margin-top: 0;
+            font-size: clamp(20px, 6vw, 32px);
+            color: #D9534F; /* Rouge pour Game Over */
+        }
+        #startScreenContainer h2 {
+            color: #428bca; /* Bleu pour Start */
+        }
+        #gameOverScreen p, #startScreenContainer p {
+            font-size: clamp(14px, 3.5vw, 20px);
+            color: #555;
+            margin: 15px 0;
+        }
+        #gameOverScreen button, #startScreenContainer button { /* Inutile si on clique/tape partout */
+            padding: clamp(10px, 2.5vw, 15px) clamp(15px, 4vw, 25px);
+            font-size: clamp(14px, 3.5vw, 20px);
+            color: white;
+            background-color: #5CB85C;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        #gameOverScreen button:hover, #startScreenContainer button:hover {
+            background-color: #4CAE4C;
+        }
+
+        /* Message pour forcer le mode paysage sur petits écrans */
+        #rotateDeviceMessage {
+            display: none; /* Caché par défaut */
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background-color: #f0f0f0;
+            color: #333;
+            font-size: clamp(18px, 5vw, 24px);
+            text-align: center;
+            padding-top: 35vh;
+            z-index: 10000;
+            box-sizing: border-box;
+        }
+
+        /* S'applique aux appareils en mode portrait ET dont la hauteur est relativement faible (téléphones) */
+        @media screen and (orientation: portrait) and (max-width: 850px) { /* max-height est moins fiable que max-width pour détecter les téléphones */
+            /* On pourrait cacher le jeu et montrer un message, mais c'est plus une suggestion qu'une force */
+            /* Pour l'instant, on laisse le jeu s'afficher, mais on peut activer le message via JS */
+        }
+
+    </style>
+</head>
+<body>
+    <div id="score">Score: 0</div>
+    <div id="startScreenContainer" style="display: block;"> <h2>Carré Sauteur !</h2>
+        <p>Touchez l'écran ou appuyez sur Espace/Haut pour commencer.</p>
+    </div>
+    <div id="gameOverScreen" style="display:none;">
+        <h2>Game Over!</h2>
+        <p>Score final: <span id="finalScore">0</span></p>
+        <button id="restartButton">Rejouer</button>
+    </div>
+    <div id="rotateDeviceMessage">Veuillez faire pivoter votre appareil en mode paysage pour jouer.</div>
+    </body>
+</html>
