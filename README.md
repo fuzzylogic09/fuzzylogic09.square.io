@@ -1,2 +1,3 @@
 # square
 square game
+test
